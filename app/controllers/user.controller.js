@@ -54,3 +54,23 @@ exports.login = (req, res) => {
     });
   });
 };
+
+exports.deleteUser = (req, res) => {
+  const userId = req.params.id_user;
+  User.delete(userId, (err, result) => {
+    if (err) {
+      console.error("Error during user deletion:", err);
+
+      if (err.message === "User not found") {
+        return res.status(404).json({
+          message: "User not found.",
+        });
+      } else {
+        return res.status(500).json({
+          message: "An error occurred while deleting the user.",
+        });
+      }
+    }
+    res.status(204).send();
+  });
+};

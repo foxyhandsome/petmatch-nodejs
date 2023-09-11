@@ -42,4 +42,23 @@ User.login = (username, password, result) => {
   );
 };
 
+User.delete = (userId, result) => {
+  sql.query("DELETE FROM user WHERE id_user = ?", userId, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.affectedRows === 0) {
+      // User with the specified user_id was not found
+      result({ message: "User not found" }, null);
+      return;
+    }
+
+    console.log("deleted user with id: ", userId);
+    result(null, res);
+  });
+};
+
 module.exports = User;
