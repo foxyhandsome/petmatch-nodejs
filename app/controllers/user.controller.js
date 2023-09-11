@@ -28,3 +28,29 @@ exports.create = (req, res) => {
     else res.send("aaa");
   });
 };
+
+exports.login = (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({
+      message: "Username and password are required fields.",
+    });
+  }
+  User.login(username, password, (err, user) => {
+    if (err) {
+      console.error("Error during login:", err);
+      return res.status(500).json({
+        message: "An error occurred while attempting to log in.",
+      });
+    }
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid username or password.",
+      });
+    }
+    res.json({
+      message: "Login successful!",
+      user,
+    });
+  });
+};

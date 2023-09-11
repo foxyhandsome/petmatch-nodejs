@@ -3,6 +3,6 @@ module.exports = (app) => {
 
   var router = require("express").Router();
   router.post("/create-user", user.create);
-
+  router.post("/login", user.login);
   app.use("/pet-match/api/user", router);
 };
