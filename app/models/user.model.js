@@ -22,6 +22,29 @@ User.create = (newUser, result) => {
   });
 };
 
+User.edit = (idUser, updatedUser, result) => {
+  sql.query(
+    "UPDATE user SET ? WHERE id_user = ?",
+    [updatedUser, idUser],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      if (res.affectedRows === 0) {
+        // User with the specified id_user was not found
+        result({ message: "User not found" }, null);
+        return;
+      }
+
+      console.log("updated user with id: ", idUser);
+      result(null, { id_user: idUser, ...updatedUser });
+    }
+  );
+};
+
 User.login = (username, password, result) => {
   sql.query(
     "SELECT * FROM user WHERE username = ? AND password = ?",

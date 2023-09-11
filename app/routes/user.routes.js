@@ -5,5 +5,6 @@ module.exports = (app) => {
   router.post("/create-user", user.create);
   router.post("/login", user.login);
   router.delete("/delete/:id_user", user.deleteUser);
+  router.put("/edit/:id_user", user.editUser);
   app.use("/pet-match/api/user", router);
 };

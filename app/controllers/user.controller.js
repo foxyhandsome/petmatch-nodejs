@@ -74,3 +74,28 @@ exports.deleteUser = (req, res) => {
     res.status(204).send();
   });
 };
+
+exports.editUser = (req, res) => {
+  const idUser = req.params.id_user; // Assuming you get the id_user from the route parameter
+  const updatedUserData = req.body; // Assuming you send the updated user data in the request body
+
+  // Call the edit method from the User model
+  User.edit(idUser, updatedUserData, (err, updatedUser) => {
+    if (err) {
+      console.error("Error during user editing:", err);
+
+      if (err.message === "User not found") {
+        return res.status(404).json({
+          message: "User not found.",
+        });
+      } else {
+        return res.status(500).json({
+          message: "An error occurred while editing the user.",
+        });
+      }
+    }
+
+    // User edited successfully
+    res.json(updatedUser);
+  });
+};
